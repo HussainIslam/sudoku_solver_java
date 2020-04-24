@@ -30,5 +30,10 @@ public class Cell {
         possibleValues.remove(Integer.valueOf(removeValue));
     }
 
+    public void updateCellValue(int value){
+        this.finalValue = value;
+        this.cellStatus = true;
+        this.possibleValues = new ArrayList<>();
+    }
 
 }

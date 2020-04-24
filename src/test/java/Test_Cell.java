@@ -90,5 +90,31 @@ public class Test_Cell {
         }
     }
 
+    @Nested
+    class UpdateCellValue{
+        private Cell innerCell;
+
+        @BeforeEach
+        void resetActualValues(){
+            innerCell = new Cell();
+            innerCell.updateCellValue(6);
+        }
+
+        @Test
+        void cellStatusTest(){
+            assertTrue(innerCell.getCellStatus());
+        }
+
+        @Test
+        void cellFinalValueTest(){
+            assertEquals(6, innerCell.getFinalValue());
+        }
+
+        @Test
+        void cellPossibleValues(){
+            assertEquals(new ArrayList<>(), innerCell.getPossibleValues());
+        }
+    }
+
 
 }

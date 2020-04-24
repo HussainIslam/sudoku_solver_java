@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.util.Scanner;
+
 public class SudokuBoard {
     Cell [][] board;
 
@@ -10,7 +13,7 @@ public class SudokuBoard {
         }
     }
 
-    public void printSudokuBoard(){
+    public void printSudokuBoard(int currentRow, int currentColumn){
 
         for(int row = 0; row < 9; row++){
             if(row % 3 == 0){
@@ -23,13 +26,20 @@ public class SudokuBoard {
                 if(column % 3 == 0){
                     System.out.print("| ");
                 }
+                String characterCode = "";
+                if(row == currentRow && column == currentColumn){
+                    characterCode = "\033[37;40;5m";
+                } else{
+                    characterCode = "\033[0m";
+                }
+                System.out.print(characterCode + board[row][column].getFinalValue());
 
-                System.out.print(board[row][column].getFinalValue());
+                characterCode = "\033[0m";
 
                 if(column == 8){
-                    System.out.print(" |");
+                    System.out.print(characterCode +" |");
                 } else{
-                    System.out.print("  ");
+                    System.out.print(characterCode +"  ");
                 }
             }
             System.out.println("");
@@ -41,4 +51,23 @@ public class SudokuBoard {
             }
         }
     }
+
+    public void inputBoardValues(){
+        Scanner in = new Scanner(System.in);
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        for (int row = 0; row < 9; row++){
+            for (int column = 0; column < 9; column++){
+                printSudokuBoard(row, column);
+                System.out.print("Value for cell " + (row + 1) + " - " +(column + 1) +": ");
+                board[row][column].updateCellValue(in.nextInt());
+                try {
+                    Runtime.getRuntime().exec("clear");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
 }
