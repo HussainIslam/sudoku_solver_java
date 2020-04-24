@@ -54,7 +54,6 @@ public class SudokuBoard {
 
     public void inputBoardValues(){
         Scanner in = new Scanner(System.in);
-        ProcessBuilder processBuilder = new ProcessBuilder();
         for (int row = 0; row < 9; row++){
             for (int column = 0; column < 9; column++){
                 printSudokuBoard(row, column);
@@ -68,6 +67,54 @@ public class SudokuBoard {
             }
         }
     }
+
+    public void solveCell(int row, int column){
+
+    }
+
+    private void checkHorizontal(int row){
+        checkHorizontal(row, 0);
+    }
+
+    private void checkHorizontal(int row, int column){
+        if (column < 9) {
+            if(board[row][column].getCellStatus()){
+                checkHorizontal(row, column + 1);
+            }
+            else{
+                for(int i = 0; i < 9; i++){
+                    if(board[row][i].getCellStatus()){
+                        board[row][column].removeAPossibleValue(board[row][i].getFinalValue());
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkVertical(int column){
+        checkVertical(0, column);
+    }
+
+    private void checkVertical(int row, int column){
+        if(row < 9){
+            if(board[row][column].getCellStatus()){
+                checkVertical(row, column);
+            }
+            else{
+                for (int i = 0; i < 9; i++){
+                    if(board[i][column].getCellStatus()){
+                        board[row][column].removeAPossibleValue(board[i][column].getFinalValue());
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkSmallerSquare(int row, int column){
+
+
+    }
+
 
 
 }
