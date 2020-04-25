@@ -28,12 +28,23 @@ public class Cell {
 
     public void removeAPossibleValue(int removeValue){
         possibleValues.remove(Integer.valueOf(removeValue));
+        if(possibleValues.size() == 1){
+            updateCellValue(possibleValues.get(0));
+        }
     }
 
     public void updateCellValue(int value){
         this.finalValue = value;
         this.cellStatus = true;
         this.possibleValues = new ArrayList<>();
+    }
+
+    public void inputCellValue(int value){
+        if(value != 0){
+            updateCellValue(value);
+        } else{
+            this.finalValue = value;
+        }
     }
 
 }
