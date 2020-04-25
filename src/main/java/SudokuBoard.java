@@ -57,6 +57,20 @@ public class SudokuBoard {
         //Scanner in = new Scanner(System.in);
         //System.out.print("Enter all digits from left to right without any space.");
 
+        //hard
+        /*String temp =
+                "200830000" +
+                "000006000" +
+                "000700815" +
+                "700400509" +
+                "049300002" +
+                "003000000" +
+                "327010000" +
+                "006040080" +
+                "000600300";*/
+
+        // easy
+
         String temp = "080720000" +
                 "900003080" +
                 "000804269" +
@@ -66,6 +80,8 @@ public class SudokuBoard {
                 "009400000" +
                 "003291857" +
                 "100300940";
+
+        //childish
         /*
         String temp = "478309120" +
                 "009128754" +
@@ -166,16 +182,21 @@ public class SudokuBoard {
     }
 
     private void checkSmallerSquare(int row, int column){
-        int currentRow = row - (row % 3);
-        int currentColumn = column - (column % 3);
-        for(int i = 0; i < 3; i++){
-            for (int j = 0; j < 3; j++){
-                if(board[currentRow + i][currentColumn + j].getCellStatus()){
-                    board[row][column].removeAPossibleValue(board[currentRow + i][currentColumn + j].getFinalValue());
+        checkSmallerSquare(row, column, row - (row % 3), column - (column % 3));
+    }
+
+    private void checkSmallerSquare(int baseRow, int baseColumn, int currentRow, int currentColumn){
+        if((currentRow - (baseRow - (baseRow % 3))) < 3){
+            if ((currentColumn - (baseColumn - (baseColumn % 3))) < 3){
+                if(board[currentRow][currentColumn].getCellStatus()){
+                    board[baseRow][baseColumn].removeAPossibleValue(board[currentRow][currentColumn].getFinalValue());
                 }
+                checkSmallerSquare(baseRow, baseColumn, currentRow, currentColumn + 1);
+            }
+            else{
+                checkSmallerSquare(baseRow, baseColumn, currentRow + 1, currentColumn - 3);
             }
         }
-
     }
 
     public void printBoardStatus(int currentRow, int currentColumn){
