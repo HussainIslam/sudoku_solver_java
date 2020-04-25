@@ -111,7 +111,21 @@ public class SudokuBoard {
     }
 
     private void checkSmallerSquare(int row, int column){
-
+        int currentRow = row;
+        int currentColumn = column;
+        if(row % 3 > 0 || column % 3 > 0){
+            currentRow = row - (row % 3);
+            currentColumn = column - (column % 3);
+        }
+        for(int i = 0; i < 3; i++){
+            currentRow += i;
+            for (int j = 0; j < 3; j++){
+                currentColumn += j;
+                if(board[currentRow][currentColumn].getCellStatus()){
+                    board[row][column].removeAPossibleValue(board[currentRow][currentColumn].getFinalValue());
+                }
+            }
+        }
 
     }
 
