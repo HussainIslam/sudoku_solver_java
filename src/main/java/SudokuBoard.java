@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class SudokuBoard {
-    Cell [][] board;
+    private Cell [][] board;
 
     public SudokuBoard() {
         this.board = new Cell[9][9];
@@ -13,45 +13,11 @@ public class SudokuBoard {
         }
     }
 
-    public void printSudokuBoard(int currentRow, int currentColumn){
-
-        for(int row = 0; row < 9; row++){
-            if(row % 3 == 0){
-                for(int k = 0; k < 11 * 3; k++){
-                    System.out.print("-");
-                }
-                System.out.println("");
-            }
-            for (int column = 0; column < 9; column++){
-                if(column % 3 == 0){
-                    System.out.print("| ");
-                }
-                String characterCode = "";
-                if(row == currentRow && column == currentColumn){
-                    characterCode = "\033[37;40;5m";
-                } else{
-                    characterCode = "\033[0m";
-                }
-                int currValue = board[row][column].getFinalValue();
-                System.out.print(characterCode + (currValue == 0 ? " " : currValue));
-
-                characterCode = "\033[0m";
-
-                if(column == 8){
-                    System.out.print(characterCode +" |");
-                } else{
-                    System.out.print(characterCode +"  ");
-                }
-            }
-            System.out.println("");
-            if(row == 8){
-                for(int k = 0; k < 11 * 3; k++){
-                    System.out.print("-");
-                }
-                System.out.println("");
-            }
-        }
+    public Cell getACell(int row, int column){
+        return board[row][column];
     }
+
+
 
     public void inputBoardAsString(){
         //Scanner in = new Scanner(System.in);
@@ -70,17 +36,12 @@ public class SudokuBoard {
                 "000600300";*/
 
         // easy
+        //String temp = "080720000900003080000804269000000608538946002006087530009400000003291857100300940";
+        // another easy
+        String temp = "000086301000020658000500702102640587009002000540710000020090006800060005396070020";
 
-        String temp = "080720000" +
-                "900003080" +
-                "000804269" +
-                "000000608" +
-                "538946002" +
-                "006087530" +
-                "009400000" +
-                "003291857" +
-                "100300940";
-
+        // medium
+        //String temp = "000000000000093670080060001500620300008050000046000020090000037200000000000180006";
         //childish
         /*
         String temp = "478309120" +
@@ -107,7 +68,6 @@ public class SudokuBoard {
         Scanner in = new Scanner(System.in);
         for (int row = 0; row < 9; row++){
             for (int column = 0; column < 9; column++){
-                printSudokuBoard(row, column);
                 System.out.print("Value for cell " + (row + 1) + " - " +(column + 1) +": ");
                 board[row][column].updateCellValue(in.nextInt());
                 try {
@@ -126,7 +86,6 @@ public class SudokuBoard {
                     solveCell(row, column);
                 }
             }
-            //printBoardStatus(0, 0);
         } while (!isSolved());
     }
 
@@ -199,42 +158,6 @@ public class SudokuBoard {
         }
     }
 
-    public void printBoardStatus(int currentRow, int currentColumn){
-        for(int row = 0; row < 9; row++){
-            if(row % 3 == 0){
-                for(int k = 0; k < 11 * 3; k++){
-                    System.out.print("-");
-                }
-                System.out.println("");
-            }
-            for (int column = 0; column < 9; column++){
-                if(column % 3 == 0){
-                    System.out.print("| ");
-                }
-                String characterCode = "";
-                if(row == currentRow && column == currentColumn){
-                    characterCode = "\033[37;40;5m";
-                } else{
-                    characterCode = "\033[0m";
-                }
-                System.out.print(characterCode + (board[row][column].getCellStatus()? 1 : 0));
 
-                characterCode = "\033[0m";
-
-                if(column == 8){
-                    System.out.print(characterCode +" |");
-                } else{
-                    System.out.print(characterCode +"  ");
-                }
-            }
-            System.out.println("");
-            if(row == 8){
-                for(int k = 0; k < 11 * 3; k++){
-                    System.out.print("-");
-                }
-                System.out.println("");
-            }
-        }
-    }
 
 }

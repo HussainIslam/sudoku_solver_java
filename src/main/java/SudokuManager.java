@@ -1,12 +1,12 @@
 public class SudokuManager {
     public static void main(String[] args) {
         SudokuBoard sb = new SudokuBoard();
+        PrintBoard pb = new PrintBoard(sb);
         sb.inputBoardAsString();
         System.out.println("Before Solving: ");
-        sb.printSudokuBoard(0,0);
+        pb.printSudokuBoard();
         sb.solveBoard();
         System.out.println("After Solving: ");
-        sb.printSudokuBoard(0, 0);
-        //sb.printBoardStatus(0,0);
+        pb.printSudokuBoard();
     }
 }
