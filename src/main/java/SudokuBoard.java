@@ -17,8 +17,6 @@ public class SudokuBoard {
         return board[row][column];
     }
 
-
-
     public void inputBoardAsString(){
         //Scanner in = new Scanner(System.in);
         //System.out.print("Enter all digits from left to right without any space.");
@@ -60,8 +58,6 @@ public class SudokuBoard {
                 board[row][column].inputCellValue(Integer.parseInt(temp.substring(startIndex, startIndex + 1)));
             }
         }
-        //printSudokuBoard(0, 0);
-        //printBoardStatus(0,0);
     }
 
     public void inputBoardValues(){
@@ -95,6 +91,10 @@ public class SudokuBoard {
             checkHorizontal(row, column);
             checkVertical(row, column);
             checkSmallerSquare(row, column);
+            if(!board[row][column].getCellStatus()){
+                board[row][column].updateTemporaryValue();
+
+            }
         }
     }
 
@@ -156,6 +156,52 @@ public class SudokuBoard {
                 checkSmallerSquare(baseRow, baseColumn, currentRow + 1, currentColumn - 3);
             }
         }
+    }
+
+    private boolean isValid(int row, int column){
+        boolean rv = true;
+        rv = isValidHorizontally(row, column, 0);
+        if(rv){
+            rv = isValidVertically(row, 0, column);
+        }
+        if(rv){
+            rv = isValidSmallerSquare(row, column, row - (row % 3), column - (column % 3));
+        }
+        return rv;
+    }
+
+    private boolean isValidHorizontally(int row, int baseColumn, int currentColumn){
+        boolean rv = true;
+        if(currentColumn < 9){
+            if(board[row][currentColumn].getFinalValue() == board[row][baseColumn].getFinalValue()){
+                rv =  false;
+            }
+            else{
+                rv = isValidHorizontally(row, baseColumn, currentColumn + 1);
+            }
+        }
+        return rv;
+    }
+
+    private  boolean isValidVertically(int row,int currentRow, int column){
+        boolean rv = true;
+        if(currentRow < 9){
+            if (board[currentRow][column].getFinalValue() == board[row][column].getFinalValue()){
+                rv = false;
+            }
+            else{
+                rv = isValidVertically(row, row + 1, column);
+            }
+        }
+        return rv;
+    }
+
+    private boolean isValidSmallerSquare(int row, int column, int currentRow, int currentColumn){
+        boolean rv = true;
+        if((currentRow - (row - (row % 3))) < 3){
+
+        }
+        return rv;
     }
 
 

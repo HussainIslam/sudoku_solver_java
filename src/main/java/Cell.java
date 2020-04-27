@@ -39,6 +39,12 @@ public class Cell {
         this.possibleValues = new ArrayList<>();
     }
 
+    public void updateTemporaryValue(){
+        if(!cellStatus){
+            this.finalValue = possibleValues.get(0);
+        }
+    }
+
     public void inputCellValue(int value){
         if(value != 0){
             updateCellValue(value);
