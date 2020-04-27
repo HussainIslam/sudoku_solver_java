@@ -199,7 +199,18 @@ public class SudokuBoard {
     private boolean isValidSmallerSquare(int row, int column, int currentRow, int currentColumn){
         boolean rv = true;
         if((currentRow - (row - (row % 3))) < 3){
-
+            if(currentColumn - (column - (column % 3)) < 3){
+                if(board[currentRow][currentColumn].getFinalValue()
+                        == board[row][column].getFinalValue()){
+                    rv = false;
+                }
+                else{
+                    isValidSmallerSquare(row, column, currentRow, currentColumn + 1);
+                }
+            }
+            else{
+                isValidSmallerSquare(row, column, currentRow + 1, column - (column % 3));
+            }
         }
         return rv;
     }
