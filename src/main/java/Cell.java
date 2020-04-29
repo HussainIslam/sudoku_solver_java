@@ -28,9 +28,10 @@ public class Cell {
 
     public void removeAPossibleValue(int removeValue){
         possibleValues.remove(Integer.valueOf(removeValue));
-        if(possibleValues.size() == 1){
-            updateCellValue(possibleValues.get(0));
+        if(possibleValues.size() == 0){
+            finalValue = -1;
         }
+
     }
 
     public void updateCellValue(int value){
@@ -41,7 +42,13 @@ public class Cell {
 
     public void updateTemporaryValue(){
         if(!cellStatus){
-            this.finalValue = possibleValues.get(0);
+            if (possibleValues.size() == 0){
+                reinitializePossibleValues();
+            }
+            this.removeAPossibleValue(finalValue);
+            if(possibleValues.size() != 0){
+                this.finalValue = possibleValues.get(0);
+            }
         }
     }
 
@@ -51,6 +58,10 @@ public class Cell {
         } else{
             this.finalValue = value;
         }
+    }
+
+    private void reinitializePossibleValues(){
+        this.possibleValues = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     }
 
 }

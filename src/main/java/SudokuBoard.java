@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class SudokuBoard {
     private Cell [][] board;
+    private PrintBoard printBoard = new PrintBoard(this);
 
     public SudokuBoard() {
         this.board = new Cell[9][9];
@@ -76,26 +77,54 @@ public class SudokuBoard {
     }
 
     public void solveBoard(){
-        do {
-            for (int row = 0; row < 9; row++){
-                for (int column = 0; column < 9; column++){
-                    solveCell(row, column);
+        solveBoard(0, 0);
+    }
+
+    public void solveBoard(int row, int column){
+        if (!isSolved()) {
+            if(row < 9){
+                if(column < 9){
+                    boolean cellSolved = solveCell(row, column);
+                    if(cellSolved){
+                        solveBoard(row, column + 1);
+                    }
+                    else{
+                        if (column != 0){
+                            solveBoard(row, column - 1);
+                        }
+                        else{
+                            if(row != 0){
+                                solveBoard(row - 1, 8);
+                            }
+                        }
+                    }
+                }
+                else{
+                    solveBoard(row + 1, 0);
                 }
             }
-        } while (!isSolved());
+            else{
+                solveBoard(0, 0);
+            }
+        }
+
     }
 
 
-    private void solveCell(int row, int column){
+    private boolean solveCell(int row, int column){
+        boolean rv = false;
         if (!board[row][column].getCellStatus()) {
-            checkHorizontal(row, column);
-            checkVertical(row, column);
-            checkSmallerSquare(row, column);
-            if(!board[row][column].getCellStatus()){
-                board[row][column].updateTemporaryValue();
-
+            board[row][column].updateTemporaryValue();
+            if(board[row][column].getFinalValue() != -1){
+                if(!isValid(row, column)){
+                    rv = solveCell(row, column);
+                }
+                else {
+                    rv = true;
+                }
             }
         }
+        return rv;
     }
 
     private boolean isSolved(){
@@ -173,8 +202,14 @@ public class SudokuBoard {
     private boolean isValidHorizontally(int row, int baseColumn, int currentColumn){
         boolean rv = true;
         if(currentColumn < 9){
-            if(board[row][currentColumn].getFinalValue() == board[row][baseColumn].getFinalValue()){
-                rv =  false;
+            if (currentColumn != baseColumn) {
+                if(     board[row][currentColumn].getFinalValue() != 0 &&
+                        board[row][currentColumn].getFinalValue() == board[row][baseColumn].getFinalValue()){
+                    rv =  false;
+                }
+                else{
+                    rv = isValidHorizontally(row, baseColumn, currentColumn + 1);
+                }
             }
             else{
                 rv = isValidHorizontally(row, baseColumn, currentColumn + 1);
@@ -186,11 +221,17 @@ public class SudokuBoard {
     private  boolean isValidVertically(int row,int currentRow, int column){
         boolean rv = true;
         if(currentRow < 9){
-            if (board[currentRow][column].getFinalValue() == board[row][column].getFinalValue()){
-                rv = false;
+            if (currentRow != row) {
+                if (    board[currentRow][column].getFinalValue() != 0 &&
+                        board[currentRow][column].getFinalValue() == board[row][column].getFinalValue()){
+                    rv = false;
+                }
+                else{
+                    rv = isValidVertically(row, currentRow + 1, column);
+                }
             }
             else{
-                rv = isValidVertically(row, row + 1, column);
+                rv = isValidVertically(row, currentRow + 1, column);
             }
         }
         return rv;
@@ -200,9 +241,15 @@ public class SudokuBoard {
         boolean rv = true;
         if((currentRow - (row - (row % 3))) < 3){
             if(currentColumn - (column - (column % 3)) < 3){
-                if(board[currentRow][currentColumn].getFinalValue()
-                        == board[row][column].getFinalValue()){
-                    rv = false;
+                if (currentRow != row &&  currentColumn != column) {
+                    if(     board[currentRow][currentColumn].getFinalValue() != 0 &&
+                            board[currentRow][currentColumn].getFinalValue()
+                            == board[row][column].getFinalValue()){
+                        rv = false;
+                    }
+                    else{
+                        isValidSmallerSquare(row, column, currentRow, currentColumn + 1);
+                    }
                 }
                 else{
                     isValidSmallerSquare(row, column, currentRow, currentColumn + 1);
