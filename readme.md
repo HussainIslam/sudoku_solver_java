@@ -14,4 +14,14 @@ According to Wikipedia:
 ## About the solution
 The current solution I have is based on possible values. The program tries to find out the value in a cell by the process of elimination. It removes all the values that are not possible in a particular value and recursively tries to identify the solution.
 
+## Screenshots
+
+**Before Solving**:
+
+![Before solving](/screenshot_before.png)
+
+**After Solving**:
+
+![After solving](/screenshot_after.png)
+
 >Note: this is **NOT** a full proof solution. A full-proof solution should have backtracking, which this particular solution doesn't use at the moment.*
